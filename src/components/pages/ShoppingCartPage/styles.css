@@ -1,0 +1,8 @@
+.order {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.order .order-item {
+  margin-right: 1.25rem;
+}

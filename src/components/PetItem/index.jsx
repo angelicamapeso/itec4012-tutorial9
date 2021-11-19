@@ -1,10 +1,19 @@
 import "./styles.css";
+import PetsOrderContext from "../../context/petsOrderContext";
+
+import { useContext } from "react";
 
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 
 export const PetItem = (props) => {
   const { image, age, name, breed, type, id } = props;
+  const globalState = useContext(PetsOrderContext);
+  const addPetToCart = () => {
+    const pet = { id, name, image, breed, type, age };
+    globalState.addPetToOrder(pet);
+    alert("Pet was added!");
+  }
 
   return (
     <div className="pet">
@@ -19,7 +28,7 @@ export const PetItem = (props) => {
         text="Request Pet"
         type="primary"
         isDisabled={false}
-        action={() => alert("Requested pet")}
+        action={addPetToCart}
       />
     </div>
   );
