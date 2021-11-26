@@ -6,6 +6,9 @@ import { useEffect, useState, useContext } from "react";
 import { PetItem } from "../../PetItem";
 import { Search } from "../../Search";
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useHistory } from "react-router-dom";
+
 export const PetsHomePage = () => {
   const [pets, setPets] = useState([]);
   const [filteredPets, setFilteredPets] = useState([]);
@@ -15,6 +18,18 @@ export const PetsHomePage = () => {
   const [searchString, setSearchString] = useState('');
 
   const globalState = useContext(PetsOrderContext);
+
+  const history = useHistory();
+
+  // check if current user logged in
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        history.push("/login");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     getPets();

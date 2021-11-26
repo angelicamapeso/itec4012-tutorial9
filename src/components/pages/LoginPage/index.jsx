@@ -2,17 +2,34 @@ import "./styles.css";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 export const LoginPage = () => {
   const [mode, setMode] = useState("login");
   const { register, handleSubmit } = useForm();
 
-  const loginUser = (formVals) => {
-    console.log("Login Submitted", formVals);
+  const history = useHistory();
+
+  const loginUser = async (formVals) => {
+    try {
+      const auth = getAuth();
+      const loginUser = await signInWithEmailAndPassword(auth, formVals.user, formVals.password);
+      history.push("/");
+    } catch(error) {
+      console.error("Error connecting to firebase!", error);
+    }
   }
 
-  const signupUser = (formVals) => {
-    console.log("Sign Up submitted", formVals);
+  const signupUser = async (formVals) => {
+    try {
+      const auth = getAuth();
+      const signUpUser = await createUserWithEmailAndPassword(auth, formVals.user, formVals.password);
+      history.push("/");
+    } catch(error) {
+      console.error("Error connecting to firebase!", error);
+    }
   }
 
   return (
